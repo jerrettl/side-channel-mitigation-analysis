@@ -16,7 +16,7 @@ fi
 
 if ! [ -f "$OUTPUT_FILE" ]; then
 	echo "Creating the result file..."
-	echo "test,sysbench,passmark_cpu_single_thread,passmark_cpu_floating_point,passmark_memory_read,passmark_memory_write,blender,zip_compress,zip_decompress,boot_firmware,boot_loader,boot_kernel,boot_userspace,boot_total" > "$OUTPUT_FILE"
+	echo "test,cmdline,sysbench,passmark_cpu_single_thread,passmark_cpu_floating_point,passmark_memory_read,passmark_memory_write,blender,zip_compress,zip_decompress,boot_firmware,boot_loader,boot_kernel,boot_userspace,boot_total" > "$OUTPUT_FILE"
 fi
 
 
@@ -24,6 +24,11 @@ test_number="$(cat "$OUTPUT_FILE" | wc -l)"
 echo -n "$test_number" >> "$OUTPUT_FILE"
 echo "Running test #$test_number..."
 exec 3>&1
+
+
+# Take a note of the boot parameters.
+cmdline="$(cat /proc/cmdline)"
+echo -n ",$cmdline" >> "$OUTPUT_FILE"
 
 
 # Sysbench
