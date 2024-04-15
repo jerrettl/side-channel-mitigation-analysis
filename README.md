@@ -19,7 +19,7 @@ To run this script, the following benchmarking tools must be installed:
 - [Blender Open Data Benchmark](https://opendata.blender.org)
     - You should download the "Linux CLI" option on the project's download page, and extract the contents to a folder that you can access.
     - Inside of this file, should be an executable file called `benchmark-launcher-cli`. Take a note of the exact location of this file.
-- 7zip
+- [7zip](https://github.com/p7zip-project/p7zip)
     - To install on Arch Linux: `sudo pacman -Sy p7zip`
 
 
