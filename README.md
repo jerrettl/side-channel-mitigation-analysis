@@ -46,7 +46,7 @@ You are now ready to run the script.
 To run the script, in a terminal first navigate to the location of `tester.sh`. Then, you will need to recall the location of `benchmark-launcher-cli`. For example, if this file is located at `/path/to/the/script/benchmark-launcher-cli`, then you would start the script as follows:
 
 ```
-BLENDER_BENCHMARK_LOCATION="/path/to/the/script/benchmark-launcher-cli" tester.sh
+BLENDER_BENCHMARK_LOCATION="/path/to/the/script/benchmark-launcher-cli" ./tester.sh
 ```
 
 
