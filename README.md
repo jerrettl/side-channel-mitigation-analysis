@@ -14,6 +14,11 @@ To run this script, the following benchmarking tools must be installed:
 
 - [Sysbench](https://github.com/akopytov/sysbench)
     - To install on Arch Linux: `sudo pacman -Sy sysbench`
+    - To install on Fedora:
+        ```
+        curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.rpm.sh | sudo bash	
+        sudo dnf -y install sysbench
+        ```
 - [Passmark](https://www.passmark.com/products/pt_linux/index.php)
     - To install on Arch Linux: `yay -S passmark-performancetest-bin`
 - [Blender Open Data Benchmark](https://opendata.blender.org)
@@ -21,11 +26,13 @@ To run this script, the following benchmarking tools must be installed:
     - Inside of this file, should be an executable file called `benchmark-launcher-cli`. Take a note of the exact location of this file.
 - [7zip](https://github.com/p7zip-project/p7zip)
     - To install on Arch Linux: `sudo pacman -Sy p7zip`
+    - To install on Fedora: `sudo dnf install p7zip`
 
 The following non-benchmarking tools must be installed:
 
 - [jq](https://github.com/jqlang/jq)
     - To install on Arch Linux: `sudo pacman -Sy jq`
+    - To install on Fedora: `sudo dnf install jq`
 
 Additionally, it is expected that the Linux operating system uses `systemd`. (You may run the command `systemd-analyze` to check this. Should the command succeed, `systemd` is installed.)
 
