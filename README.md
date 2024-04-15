@@ -22,6 +22,10 @@ To run this script, the following benchmarking tools must be installed:
 - [7zip](https://github.com/p7zip-project/p7zip)
     - To install on Arch Linux: `sudo pacman -Sy p7zip`
 
+The following non-benchmarking tools must be installed:
+
+- [jq](https://github.com/jqlang/jq)
+    - To install on Arch Linux: `sudo pacman -Sy jq`
 
 Additionally, it is expected that the Linux operating system uses `systemd`. (You may run the command `systemd-analyze` to check this. Should the command succeed, `systemd` is installed.)
 
