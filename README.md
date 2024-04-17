@@ -16,11 +16,22 @@ To run this script, the following benchmarking tools must be installed:
     - To install on Arch Linux: `sudo pacman -Sy sysbench`
     - To install on Fedora:
         ```
-        curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.rpm.sh | sudo bash	
-        sudo dnf -y install sysbench
+        git clone https://github.com/akopytov/sysbench
+        cd sysbench
+        sudo dnf -y install make automake libtool
+        pkgconfig libaio-devel
+        sudo dnf -y install mariadb-devel openssl-devel
+        ./autogen.sh
+        ./configure --without-mysql
+        make -j
+        sudo make install
         ```
 - [Passmark](https://www.passmark.com/products/pt_linux/index.php)
     - To install on Arch Linux: `yay -S passmark-performancetest-bin`
+    - To install on Fedora:
+        - Download your operating system's version at: https://www.passmark.com/products/pt_linux/download.php
+        - Extract the contents to a folder that you can access.
+        - Inside of this file, should be an executable file called `pt_linux_...` where "`...`" is the version you downloaded. Take a note of the exact location of this file.
 - [Blender Open Data Benchmark](https://opendata.blender.org)
     - You should download the "Linux CLI" option on the project's download page, and extract the contents to a folder that you can access.
     - Inside of this file, should be an executable file called `benchmark-launcher-cli`. Take a note of the exact location of this file.
@@ -54,6 +65,12 @@ To run the script, in a terminal first navigate to the location of `tester.sh`. 
 
 ```
 BLENDER_BENCHMARK_LOCATION="/path/to/the/script/benchmark-launcher-cli" ./tester.sh
+```
+
+**Only if you are on Fedora** and need to manually provide the path to the Passmark executable, you would also add the path to this as follows:
+
+```
+BLENDER_BENCHMARK_LOCATION="/path/to/the/script/benchmark-launcher-cli" PASSMARK_LOCATION="/other/path/to/the/other/script/pt_linux_..." ./tester.sh
 ```
 
 
