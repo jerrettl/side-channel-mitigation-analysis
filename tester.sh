@@ -14,6 +14,11 @@ if [ -z "$BLENDER_BENCHMARK_LOCATION" ]; then
 	exit 1
 fi
 
+if [ -z "$PASSMARK_LOCATION" ]; then
+	# Assume that Passmark is in the PATH as `passmark-performancetest`.
+ 	PASSMARK_LOCATION="passmark-performancetest"
+fi
+
 if ! [ -f "$OUTPUT_FILE" ]; then
 	echo "Creating the result file..."
 	echo "test,cmdline,sysbench,passmark_cpu_single_thread,passmark_cpu_floating_point,passmark_memory_read,passmark_memory_write,blender,zip_compress,zip_decompress,boot_firmware,boot_loader,boot_kernel,boot_userspace,boot_total" > "$OUTPUT_FILE"
@@ -42,7 +47,7 @@ echo -n ",$sysbench_result" >> "$OUTPUT_FILE"
 
 echo
 echo "==> Passmark (CPU)"
-passmark_cpu="$(passmark-performancetest -r 1)"
+passmark_cpu="$("$PASSMARK_LOCATION" -r 1)"
 
 passmark_single_thread="$(cat results_cpu.yml | grep 'CPU_SINGLETHREAD' | cut -d' ' -f4)"
 echo "Single thread: $passmark_single_thread"
@@ -53,7 +58,7 @@ echo -n ",$passmark_floating_point" >> "$OUTPUT_FILE"
 
 echo
 echo "==> Passmark (Memory)"
-passmark_memory="$(passmark-performancetest -r 2)"
+passmark_memory="$("$PASSMARK_LOCATION" -r 2)"
 
 passmark_memory_read="$(cat results_memory.yml | grep 'ME_READ_S' | cut -d' ' -f4)"
 echo "Memory read: $passmark_memory_read"
