@@ -3,16 +3,6 @@
 OUTPUT_FILE="results.csv"
 
 
-if [ -z "$BLENDER_BENCHMARK_LOCATION" ]; then
-	echo "You should specify the location of your Blender Open Data Benchmark script."
-	echo "Example: BLENDER_BENCHMARK_LOCATION=\"/path/to/the/script/benchmark-launcher-cli\" $0"
-	echo
-	echo "Note: Before running, you should set up the \`benchmark-launcher-cli\` script with the following:"
-	echo "        ./benchmark-launcher-cli blender download 4.0.0"
-	echo "        ./benchmark-launcher-cli scenes download monster --blender-version 4.0.0"
-	echo "(You may need to move to the folder that contains the script first.)"
-	exit 1
-fi
 
 if [ -z "$PASSMARK_LOCATION" ]; then
 	# Assume that Passmark is in the PATH as `passmark-performancetest`.
@@ -21,7 +11,7 @@ fi
 
 if ! [ -f "$OUTPUT_FILE" ]; then
 	echo "Creating the result file..."
-	echo "test,cmdline,sysbench,passmark_cpu_single_thread,passmark_cpu_floating_point,passmark_memory_read,passmark_memory_write,blender,zip_compress,zip_decompress,boot_firmware,boot_loader,boot_kernel,boot_userspace,boot_total" > "$OUTPUT_FILE"
+	echo "test,cmdline,sysbench,passmark_cpu_single_thread,passmark_cpu_floating_point,passmark_memory_read,passmark_memory_write,zip_compress,zip_decompress,boot_firmware,boot_loader,boot_kernel,boot_userspace,boot_total" > "$OUTPUT_FILE"
 fi
 
 
@@ -69,13 +59,6 @@ echo -n ",$passmark_memory_write" >> "$OUTPUT_FILE"
 
 
 
-echo
-echo "==> Blender Open Data Benchmark"
-blender="$($BLENDER_BENCHMARK_LOCATION benchmark --blender-version 4.0.0 --device-type CPU --json monster | tee /dev/fd/3)"
-
-blender_result="$(echo "$blender" | jq .[0].stats.total_render_time)"
-echo "Blender result: $blender_result"
-echo -n ",$blender_result" >> "$OUTPUT_FILE"
 
 
 
