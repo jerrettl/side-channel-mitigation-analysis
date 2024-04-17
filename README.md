@@ -32,6 +32,9 @@ To run this script, the following benchmarking tools must be installed:
         - Download your operating system's version at: https://www.passmark.com/products/pt_linux/download.php
         - Extract the contents to a folder that you can access.
         - Inside of this file, should be an executable file called `pt_linux_...` where "`...`" is the version you downloaded. Take a note of the exact location of this file.
+- [cryptsetup](https://gitlab.com/cryptsetup/cryptsetup/)
+    - To install on Arch Linux: `sudo pacman -Sy cryptsetup`
+    - To install on Fedora: `sudo dnf install cryptsetup`
 - [7zip](https://github.com/p7zip-project/p7zip)
     - To install on Arch Linux: `sudo pacman -Sy p7zip`
     - To install on Fedora: `sudo dnf install p7zip`

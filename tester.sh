@@ -11,7 +11,7 @@ fi
 
 if ! [ -f "$OUTPUT_FILE" ]; then
 	echo "Creating the result file..."
-	echo "test,cmdline,sysbench,passmark_cpu_single_thread,passmark_cpu_floating_point,passmark_memory_read,passmark_memory_write,zip_compress,zip_decompress,boot_firmware,boot_loader,boot_kernel,boot_userspace,boot_total" > "$OUTPUT_FILE"
+	echo "test,cmdline,sysbench,passmark_cpu_single_thread,passmark_cpu_floating_point,passmark_memory_read,passmark_memory_write,encrypt_aes_cbc,encrypt_aes_xts,zip_compress,zip_decompress,boot_firmware,boot_loader,boot_kernel,boot_userspace,boot_total" > "$OUTPUT_FILE"
 fi
 
 
@@ -59,6 +59,21 @@ echo -n ",$passmark_memory_write" >> "$OUTPUT_FILE"
 
 
 
+echo
+echo "==> cryptsetup (aes-cbc)"
+encrypt_aes_cbc="$(cryptsetup benchmark --cipher aes-cbc | tee /dev/fd/3)"
+
+encrypt_aes_cbc_result="$(echo "$encrypt_aes_cbc" | grep 'aes-cbc' | awk '{print $3}')"
+echo "Encrypt aes-cbc: $encrypt_aes_cbc_result"
+echo -n ",$encrypt_aes_cbc_result" >> "$OUTPUT_FILE"
+
+
+echo
+echo "==> cryptsetup (aes-xts)"
+encrypt_aes_xts="$(cryptsetup benchmark --cipher aes-xts | tee /dev/fd/3)"
+encrypt_aes_xts_result="$(echo "$encrypt_aes_xts" | grep 'aes-xts' | awk '{print $3}')"
+echo "Encrypt aes-xts: $encrypt_aes_xts_result"
+echo -n ",$encrypt_aes_xts_result" >> "$OUTPUT_FILE"
 
 
 
