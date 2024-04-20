@@ -3,22 +3,36 @@
 OUTPUT_FILE="results.csv"
 
 
-
 if [ -z "$PASSMARK_LOCATION" ]; then
 	# Assume that Passmark is in the PATH as `passmark-performancetest`.
  	PASSMARK_LOCATION="passmark-performancetest"
 fi
 
+exec 3>&1
+
+boot_time="$(systemd-analyze)"
+boot_time_processed="$(echo "$boot_time" | grep 'Startup finished' | sed -E 's/Startup finished in (.*) = ([0-9.]*s)/\1\n\2 (total)/;s/\s+\+\s+/\n/g' | sed -E 's/([0-9.]+)s\s*\((.+)\)/\2 \1/')"
+
+# Create CSV file headers.
 if ! [ -f "$OUTPUT_FILE" ]; then
 	echo "Creating the result file..."
-	echo "test,cmdline,sysbench,passmark_cpu_single_thread,passmark_cpu_floating_point,passmark_memory_read,passmark_memory_write,encrypt_aes_cbc,encrypt_aes_xts,zip_compress,zip_decompress,boot_firmware,boot_loader,boot_kernel,boot_userspace,boot_total" > "$OUTPUT_FILE"
+	echo -n "test,cmdline,sysbench,passmark_cpu_single_thread,passmark_cpu_floating_point,passmark_memory_read,passmark_memory_write,encrypt_aes_cbc,encrypt_aes_xts,zip_compress,zip_decompress" > "$OUTPUT_FILE"
+
+	# Add in the headers for the boot stages.
+	echo "$boot_time_processed" | while read line
+	do
+		boot_name="$(echo "$line" | cut -d' ' -f1)"
+		echo -n ",boot_$boot_name" >> "$OUTPUT_FILE"
+	done
+
+	echo >> "$OUTPUT_FILE"
 fi
+
 
 
 test_number="$(cat "$OUTPUT_FILE" | wc -l)"
 echo -n "$test_number" >> "$OUTPUT_FILE"
 echo "Running test #$test_number..."
-exec 3>&1
 
 
 # Take a note of the boot parameters.
@@ -90,28 +104,18 @@ echo -n ",$zip_result_decompress" >> "$OUTPUT_FILE"
 
 
 
-
 echo
 echo "==> Boot time (systemd-analyze)"
-boot_time="$(systemd-analyze | tee /dev/fd/3)"
-
-systemd_times="$(systemd-analyze time | grep 'Startup finished' | sed -E 's/Startup finished in ([0-9.]*)s \(firmware\) \+ ([0-9.]*)s \(loader\) \+ ([0-9.]*)s \(kernel\) \+ ([0-9.]*)s \(userspace\) = ([0-9.]*)s/Firmware: \1\nLoader: \2\nKernel: \3\nUserspace: \4\nTotal: \5/')"
-systemd_firmware="$(echo "$systemd_times" | grep Firmware | cut -d' ' -f2)"
-echo "Boot time (firmware): $systemd_firmware"
-echo -n ",$systemd_firmware" >> "$OUTPUT_FILE"
-systemd_loader="$(echo "$systemd_times" | grep Loader | cut -d' ' -f2)"
-echo "Boot time (loader): $systemd_loader"
-echo -n ",$systemd_loader" >> "$OUTPUT_FILE"
-systemd_kernel="$(echo "$systemd_times" | grep Kernel | cut -d' ' -f2)"
-echo "Boot time (kernel): $systemd_kernel"
-echo -n ",$systemd_kernel" >> "$OUTPUT_FILE"
-systemd_userspace="$(echo "$systemd_times" | grep Userspace | cut -d' ' -f2)"
-echo "Boot time (userspace): $systemd_userspace"
-echo -n ",$systemd_userspace" >> "$OUTPUT_FILE"
-systemd_total="$(echo "$systemd_times" | grep Total | cut -d' ' -f2)"
-echo "Boot time (total): $systemd_total"
-echo ",$systemd_total" >> "$OUTPUT_FILE"
-
+echo "$boot_time"
+echo
+echo "$boot_time_processed" | while read line
+do
+	boot_name="$(echo "$line" | cut -d' ' -f1)"
+	boot_length="$(echo "$line" | cut -d' ' -f2)"
+	echo "Boot time ($boot_name): $boot_length"
+	echo -n ",$boot_length" >> "$OUTPUT_FILE"
+done
+echo >> "$OUTPUT_FILE"
 
 
 echo
