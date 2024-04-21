@@ -23,6 +23,10 @@ def main():
 
     # List the tests used.
     tests = [col for col in df.columns if col not in ['test', 'cmdline', 'params']]
+    # To display only specific tests, you may comment this above line and replace it
+    # with something like the following:
+    #   tests = ['test1', 'test2', ...']
+    # This list can use any of the test names as listed in the original CSV file.
 
     # Create a box plot.
     # Set some styling. This is how to arrange the results for each test.
