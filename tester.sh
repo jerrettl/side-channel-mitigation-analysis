@@ -11,7 +11,7 @@ fi
 exec 3>&1
 
 boot_time="$(systemd-analyze)"
-boot_time_processed="$(echo "$boot_time" | grep 'Startup finished' | sed -E 's/Startup finished in (.*) = ([0-9.]*s)/\1\n\2 (total)/;s/\s+\+\s+/\n/g' | sed -E 's/([0-9.]+)s\s*\((.+)\)/\2 \1/')"
+boot_time_processed="$(echo "$boot_time" | grep 'Startup finished' | sed -E 's/Startup finished in (.*) = ([0-9.]*s)/\1\n\2 (total)/;s/\s+\+\s+/\n/g' | sed -E 's/([0-9.]+)s\s*\((.+)\)/\2 \1/' | sed -E 's/([0-9.]+)ms\s*\((.+)\)/\2 0.\1/')"
 
 # Create CSV file headers.
 if ! [ -f "$OUTPUT_FILE" ]; then
