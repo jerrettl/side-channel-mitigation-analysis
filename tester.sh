@@ -37,7 +37,7 @@ echo "Running test #$test_number..."
 
 # Take a note of the boot parameters.
 cmdline="$(cat /proc/cmdline)"
-echo -n ",$cmdline" >> "$OUTPUT_FILE"
+echo -n ",\"$cmdline\"" >> "$OUTPUT_FILE"
 
 
 # Sysbench
