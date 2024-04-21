@@ -79,10 +79,16 @@ Some basic graphs can be automatically generated based on `results.csv`. To do t
 >
 > You may use `pip`, your package manager, or other means depending on your specific system's setup.
 
-To generate graphs, run the following:
+To generate graphs, run the following in a command-line environment:
 
 ```
 python3 create-graphs.py
+```
+
+You may generate graphs with a specific CSV file by adding the name of that file:
+
+```
+python3 create-graphs.py <filename>
 ```
 
 This will create two files, `results.pdf` and `results.csv`, for your use. Adjust the script as needed to isolate specific tests.
