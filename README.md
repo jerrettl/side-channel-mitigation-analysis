@@ -66,3 +66,23 @@ During the execution of the script, you will see various output representing eac
 After running the script, a new file will be created called `results.csv`. (There will be a few other files created from various benchmark applications, but these can be ignored.)
 
 Each time the script is run, `results.csv` will add the results of that run to the last line of the file.
+
+
+## Generating Graphs
+
+Some basic graphs can be automatically generated based on `results.csv`. To do this, use the `create-graphs.py` script.
+
+> Note: You must have the following Python dependencies installed:
+>
+> - `matplotlib`
+> - `pandas`
+>
+> You may use `pip`, your package manager, or other means depending on your specific system's setup.
+
+To generate graphs, run the following:
+
+```
+python3 create-graphs.py
+```
+
+This will create two files, `results.pdf` and `results.csv`, for your use. Adjust the script as needed to isolate specific tests.
