@@ -67,7 +67,7 @@ def parse_data(results_file):
     # Count the frequency of each parameter.
     c = df['cmdline_split'].explode().value_counts()
     # A 'trivial' boot parameter is one that is in every run.
-    trivial = c[c == len(df)].index.tolist()
+    trivial = c[c >= len(df)].index.tolist()
 
     # Place the non-trivial parameters of each run into a new column. (Used for graphing.)
     df['params'] = pd.Series([list(set([param for param in cmdline if param not in trivial])) for cmdline in df['cmdline_split']], index=df.index).str.join(' ')
