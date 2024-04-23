@@ -40,12 +40,27 @@ def main():
     fig.set_tight_layout(True)
     for i, test in enumerate(tests):
         try:
-            df.boxplot(column=test, by='params', rot=90, layout=(1, len(tests)), ax=ax[i])
+            axis = ax[i]
         except TypeError:
             # There will only be one axis if there is one test, so `ax` is not indexable in this case.
-            df.boxplot(column=test, by='params', rot=90, layout=(1, len(tests)), ax=ax)
+            axis = ax
+
+        df.boxplot(column=test, by='params', rot=90, layout=(1, len(tests)), ax=axis)
+        axis.set_xlabel('Parameters')
+        match test:
+            case 'sysbench':
+                axis.set_ylabel('Events per Second')
+            case str(test) if 'crypt' in test:
+                axis.set_ylabel('Speed (MiB/s)')
+            case str(test) if 'zip' in test:
+                axis.set_ylabel('Average MIPS')
+            case str(test) if 'boot' in test:
+                axis.set_ylabel('Time (s)')
+            case _:
+                axis.set_ylabel('Score')
 
     # Save the figure.
+    plt.suptitle('')
     plt.savefig('results.pdf', bbox_inches='tight')
     plt.savefig('results.svg', bbox_inches='tight')
 
